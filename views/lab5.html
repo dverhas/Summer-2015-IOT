@@ -1,0 +1,83 @@
+<html>
+  <head>
+
+  <script src="http://maps.googleapis.com/maps/api/js"></script>
+
+  <script>
+    function initialize() {
+      var mapProp = {
+        center:new google.maps.LatLng(39, -95),
+        zoom:4,
+        mapTypeId:google.maps.MapTypeId.ROADMAP
+      };
+      var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+
+%for city in data:
+% base_url = 'http://openweathermap.org/img/w/'
+% icons = {
+%    '800' : '01d.png',
+%    '801' : '02d.png',
+%    '802' : '03d.png',
+%    '803' : '04d.png',
+%    '804' : '04d.png',
+%    '500' : '04d.png',
+%    '501' : '10d.png',
+%    '502' : '10d.png',
+%    '503' : '10d.png',
+%    '504' : '10d.png',
+%    '511' : '14d.png',
+%    '511' : '14d.png',
+%    '200' : '11d.png',
+%    '201' : '11d.png',
+%    '202' : '11d.png',
+%    '203' : '11d.png',
+%    '204' : '11d.png',
+%    '205' : '11d.png'
+%}
+% icon = 'http://openweathermap.org/img/w/'+str(icons[city['weather']])
+
+      latlon = new google.maps.LatLng({{city['latitude']}},{{city['longitude']}});
+
+      marker = new google.maps.Marker({
+        position:latlon,
+        map: map,
+        icon:'{{icon}}',
+        title:"{{city['temp']}}"
+      });
+//      infowindow = new google.maps.InfoWindow({
+//        content: "temp: {{city['temp']}}, humidity: humidity: {{city['humidity']}}"
+//      });
+//      google.maps.event.addListener(marker, 'click', function() {
+//        infowindow.open(map,marker);
+//      });
+%end
+    }
+
+    google.maps.event.addDomListener(window, 'load', initialize);
+    </script>
+
+  </head>
+
+  <body>
+    <div id="googleMap" style="width:800; height:600"></div>
+<br>
+<br>
+<br>
+<br>
+<table>
+<tr>
+  <th>lon</th>
+  <th>lat</th>
+  <th>temp</th>
+</tr>
+
+%for city in data:
+  <tr>
+      <td>{{city['longitude']}}</td>
+      <td>{{city['latitude']}}</td>
+      <td>{{city['temp']}}</td>
+  </tr>
+%end
+</table>
+  </body>
+</html>
